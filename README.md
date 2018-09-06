@@ -4,7 +4,11 @@
 
 ## Why?
 
-Tests provide safety net that ensures your code works correctly. What you don't know is  that your code is correct and fast! How does it scale with different input sizes? Your code may have computational complexity that doens't scale with large workloads. It would be good to know before your application goes into production, wouldn't it?
+Tests provide safety net that ensures your code works correctly. What you don't know is how fast your code is! How does it scale with different input sizes? Your code may have computational complexity that doens't scale with large workloads. It would be good to know before your application goes into production, wouldn't it?
+
+You can use this library to estimate computational complexity by running Ruby code on inputs increasing in size, and measuring its execution times. Based on these measurements **Benchmark::Trend** will fit a model that best predicts how a given Ruby code will perform with growing load.
+
+This will allow you to uncover performance bugs or confirm that a Ruby code performance scales as expected.
 
 ## Installation
 
@@ -24,9 +28,56 @@ Or install it yourself as:
 
 ## Usage
 
+Let's assume we would like to find out behaviour of a Fibonnacci algorith:
+
 ```ruby
-bench_trend = Benchmark::Trend.new
-bench_trend.infer
+def fibonacci(n)
+  n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+end
+```
+
+To measure the actual complexity of above function, we will use `infer_tren` method and pass it as a first argument an array of integer sizes and a block to execute the method:
+
+```ruby
+sizes = (1..24).to_a
+
+trend, trends = Benchmark::Trend.infer_trend(sizes) do |n|
+  fibonacci(n)
+end
+```
+
+The return type will provide a best trend name:
+
+```ruby
+print trend
+# => exponential
+```
+
+and a Hash of all the trend data:
+
+```ruby
+print trends
+# =>
+# {:exponential=>
+#   {:trend=>"1.39 * 0.00^n",
+#    :slope=>1.3861415449985763,
+#    :intercept=>1.9181961296516025e-06,
+#    :residual=>0.9165373086346811},
+#  :power=>
+#   {:trend=>"0.00n^2.27",
+#    :slope=>6.356187983536552e-07,
+#    :intercept=>2.2719141523851145,
+#    :residual=>0.6120494462223005},
+#  :linear=>
+#   {:trend=>"0.00*n + -0.00",
+#    :slope=>0.00026488137564940743,
+#    :intercept=>-0.002015679028937629,
+#    :residual=>0.44011069414646825},
+#  :logarithmic=>
+#   {:trend=>"0.00*ln(x) + -0.00",
+#    :slope=>0.0015946924639701383,
+#    :intercept=>-0.0023448616296455785,
+#    :residual=>0.22003702102339448}}
 ```
 
 ## Development
