@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/benchmark-trend.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/benchmark-trend.svg?branch=master)][travis]
-[![Build status](https://ci.appveyor.com/api/projects/status/2i5lx3tvyi5l8x3j?svg=true)][appveyor]
+[![Build status](https://ci.appveyor.com/api/projects/status/798apneaa8ixg5dk?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/782faa4a8a4662c86792/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/piotrmurach/benchmark-trend/badge.svg)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/benchmark-trend.svg?branch=master)][inchpages]
