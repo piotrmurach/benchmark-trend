@@ -4,14 +4,14 @@
 [![Build Status](https://secure.travis-ci.org/piotrmurach/benchmark-trend.svg?branch=master)][travis]
 [![Build status](https://ci.appveyor.com/api/projects/status/798apneaa8ixg5dk?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/782faa4a8a4662c86792/maintainability)][codeclimate]
-[![Coverage Status](https://coveralls.io/repos/piotrmurach/benchmark-trend/badge.svg)][coverage]
+[![Coverage Status](https://coveralls.io/repos/github/piotrmurach/benchmark-trend/badge.svg?branch=master)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/benchmark-trend.svg?branch=master)][inchpages]
 
 [gem]: http://badge.fury.io/rb/benchmark-trend
 [travis]: http://travis-ci.org/piotrmurach/benchmark-trend
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/benchmark-trend
 [codeclimate]: https://codeclimate.com/github/piotrmurach/benchmark-trend/maintainability
-[coverage]: https://coveralls.io/r/piotrmurach/benchmark-trend
+[coverage]: https://coveralls.io/github/piotrmurach/benchmark-trend?branch=master
 [inchpages]: http://inch-ci.org/github/piotrmurach/benchmark-trend
 
 > Measure pefromance trends of Ruby code based on the input size distribution.
