@@ -6,6 +6,9 @@ require_relative 'trend/version'
 
 module Benchmark
   module Trend
+    # Change module function visiblity to private
+    #
+    # @api private
     def self.private_module_function(method)
       module_function(method)
       private_class_method(method)
