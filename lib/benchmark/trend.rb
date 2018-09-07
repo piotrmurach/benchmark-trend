@@ -135,7 +135,7 @@ module Benchmark
     # @api public
     def fit_power(xs, ys)
       a, b, rr = fit(xs, ys, tran_x: ->(x) { Math.log(x)},
-                            tran_y: ->(y) { Math.log(y)})
+                             tran_y: ->(y) { Math.log(y)})
 
       [Math.exp(b), a, rr]
     end
@@ -201,6 +201,12 @@ module Benchmark
     end
     module_function :fit
 
+    # A mathematical notation template for a trend type
+    #
+    # @return [String]
+    #   the formatted mathematical function template
+    #
+    # @api private
     def trend_format(type)
       case type
       when :linear
@@ -238,7 +244,7 @@ module Benchmark
       fit_types.each do |fit|
         a, b, rr = *send(:"fit_#{fit}", ns, times)
         fitted[fit] = {trend: trend_format(fit) % [a, b],
-                      slope: a, intercept: b, residual: rr}
+                       slope: a, intercept: b, residual: rr}
         if rr > best_residual
           best_residual = rr
           best_fit = fit
