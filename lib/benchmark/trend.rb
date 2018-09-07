@@ -199,7 +199,7 @@ module Benchmark
       elsif ty.abs < eps # no variation in ys - constant fit
         slope = 0
         intercept = sum_y / n
-        residual_sq = 0 # doesn't exist
+        residual_sq = 1 # doesn't exist
       else
         slope       = txy / tx
         intercept   = (sum_y - slope * sum_x) / n

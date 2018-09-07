@@ -31,7 +31,7 @@ RSpec.describe Benchmark::Trend, '#fit_linear' do
 
     expect(a).to eq(0)
     expect(b).to eq(6)
-    expect(rr).to eq(0)
+    expect(rr).to eq(1)
   end
 
   it "calculates constant fit with noise" do
