@@ -19,7 +19,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers finding maximum value trend to be linear" do
-    array_sizes = Benchmark::Trend.range(1, 65_000)
+    array_sizes = Benchmark::Trend.range(1, 100_000)
     number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
 
     trend, trends = Benchmark::Trend.infer_trend(array_sizes) do

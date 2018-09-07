@@ -250,13 +250,20 @@ module Benchmark
       best_fit = :none
       best_residual = 0
       fitted = {}
+      n = ns.size.to_f
+      aic = -1.0/0
+      best_aic = -1.0/0
+
       fit_types.each do |fit|
         a, b, rr = *send(:"fit_#{fit}", ns, times)
+        # goodness of model
+        aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
         fitted[fit] = {trend: trend_format(fit) % [a, b],
                        slope: a, intercept: b, residual: rr}
-        if rr > best_residual
+        if rr > best_residual && aic >= best_aic
           best_residual = rr
           best_fit = fit
+          best_aic = aic
         end
       end
 
