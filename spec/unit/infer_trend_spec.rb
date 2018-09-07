@@ -6,7 +6,8 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers fibonacci algorithm trend to be exponential" do
-    trend, trends = Benchmark::Trend.infer_trend(1..24) do |n|
+    numbers = Benchmark::Trend.range(1, 28, multi: 2)
+    trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
       fibonacci(n)
     end
 
