@@ -173,6 +173,7 @@ module Benchmark
     #
     # @api public
     def fit(xs, ys, tran_x: ->(x) { x }, tran_y: ->(y) { y })
+      eps    = 0.000001
       n      = 0
       sum_x  = 0.0
       sum_x2 = 0.0
@@ -193,9 +194,17 @@ module Benchmark
       tx  = n * sum_x2 - sum_x ** 2
       ty  = n * sum_y2 - sum_y ** 2
 
-      slope       = txy / tx
-      intercept   = (sum_y - slope * sum_x) / n
-      residual_sq = (txy ** 2) / (tx * ty)
+      if tx.abs < eps # no variation in xs
+        raise ArgumentError, "No variation in data #{xs}"
+      elsif ty.abs < eps # no variation in ys - constant fit
+        slope = 0
+        intercept = sum_y / n
+        residual_sq = 0 # doesn't exist
+      else
+        slope       = txy / tx
+        intercept   = (sum_y - slope * sum_x) / n
+        residual_sq = (txy ** 2) / (tx * ty)
+      end
 
       [slope, intercept, residual_sq]
     end

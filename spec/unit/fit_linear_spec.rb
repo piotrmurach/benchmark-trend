@@ -22,4 +22,35 @@ RSpec.describe Benchmark::Trend, '#fit_linear' do
     expect(b).to be_within(0.1).of(-0.36)
     expect(rr).to be_within(0.001).of(0.953)
   end
+
+  it "calculates perfect constant fit" do
+    xs = [1, 2, 3, 4, 5]
+    ys = [6.0, 6.0, 6.0, 6.0, 6.0]
+
+    a, b, rr = Benchmark::Trend.fit_linear(xs, ys)
+
+    expect(a).to eq(0)
+    expect(b).to eq(6)
+    expect(rr).to eq(0)
+  end
+
+  it "calculates constant fit with noise" do
+    xs = [1, 2, 3, 4, 5]
+    ys = [1.0, 0.9, 1.0, 1.1, 1.0]
+
+    a, b, rr = Benchmark::Trend.fit_linear(xs, ys)
+
+    expect(a).to eq(0.02)
+    expect(b).to be_within(0.01).of(0.94)
+    expect(rr).to be_within(0.01).of(0.19)
+  end
+
+  it "raises when no variation in data" do
+    xs = [1, 1, 1, 1, 1]
+    ys = [1.0, 0.9, 1.0, 1.1, 1.0]
+
+    expect {
+      Benchmark::Trend.fit_linear(xs, ys)
+    }.to raise_error(ArgumentError, "No variation in data [1, 1, 1, 1, 1]")
+  end
 end
