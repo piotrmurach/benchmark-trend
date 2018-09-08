@@ -81,26 +81,26 @@ and a Hash of all the trend data:
 ```ruby
 print trends
 # =>
-{:exponential=>
-  {:trend=>"1.38 * 0.00^x",
-   :slope=>1.382889711685203,
-   :intercept=>3.822775903539121e-06,
-   :residual=>0.9052392775178072},
- :power=>
-  {:trend=>"0.00 * x^2.11",
-   :slope=>2.4911044372815657e-06,
-   :intercept=>2.1138475434240918,
-   :residual=>0.5623418036957115},
- :linear=>
-  {:trend=>"0.00 + -0.01*x",
-   :slope=>0.0028434594496586007,
-   :intercept=>-0.01370769842204958,
-   :residual=>0.7290365425188893},
- :logarithmic=>
-  {:trend=>"0.02 + -0.02*ln(x)",
-   :slope=>0.01738674709454521,
-   :intercept=>-0.015489004560847924,
-   :residual=>0.3982368125757882}}
+# {:exponential=>
+#   {:trend=>"1.38 * 0.00^x",
+#    :slope=>1.382889711685203,
+#    :intercept=>3.822775903539121e-06,
+#    :residual=>0.9052392775178072},
+#  :power=>
+#   {:trend=>"0.00 * x^2.11",
+#    :slope=>2.4911044372815657e-06,
+#    :intercept=>2.1138475434240918,
+#    :residual=>0.5623418036957115},
+#  :linear=>
+#   {:trend=>"0.00 + -0.01*x",
+#    :slope=>0.0028434594496586007,
+#    :intercept=>-0.01370769842204958,
+#    :residual=>0.7290365425188893},
+#  :logarithmic=>
+#   {:trend=>"0.02 + -0.02*ln(x)",
+#    :slope=>0.01738674709454521,
+#    :intercept=>-0.015489004560847924,
+#    :residual=>0.3982368125757882}}
 ```
 
 You can see information for the best trend by passing name into trends hash:
@@ -206,7 +206,7 @@ print trends[trend]
 
 ### 2.3 fit
 
-Use `fit` method if you wish to fit arbitrary data and measure their performance to construct a model with a slope and intercept parameters that minimize the error.
+Use `fit` method if you wish to fit arbitrary data into a model with a slope and intercept parameters that minimize the error.
 
 For example, given a set of data points that exhibit linear behaviour:
 
