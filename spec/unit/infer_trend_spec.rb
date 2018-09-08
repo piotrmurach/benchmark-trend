@@ -44,7 +44,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers fibonacci memoized algorithm trend to be linear" do
-    numbers = Benchmark::Trend.range(1, 5_000, ratio: 2)
+    numbers = Benchmark::Trend.range(1, 5_000)
     trend, _ = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_mem(n)
     end
@@ -53,7 +53,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers fibonacci iterative algorithm trend to be linear" do
-    numbers = Benchmark::Trend.range(1, 10_000, ratio: 2)
+    numbers = Benchmark::Trend.range(1, 20_000)
     trend, _ = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_iter(n)
     end
@@ -62,7 +62,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers fibonacci constant algorithm trend to be linear" do
-    numbers = Benchmark::Trend.range(1, 1_000, ratio: 2)
+    numbers = Benchmark::Trend.range(1, 1_000)
     trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_const(n)
     end
