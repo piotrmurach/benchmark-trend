@@ -232,6 +232,9 @@ module Benchmark
     end
     module_function :trend_format
 
+    # the trends to consider
+    FIT_TYPES = [:exponential, :power, :linear, :logarithmic]
+
     # Infer trend from the execution times
     #
     # Fits the executiom times for each range to several fit models.
@@ -243,9 +246,6 @@ module Benchmark
     #
     # @api public
     def infer_trend(data, &work)
-      # the trends to consider
-      fit_types = [:exponential, :power, :linear, :logarithmic]
-
       ns, times = *measure_execution_time(data, &work)
       best_fit = :none
       best_residual = 0
@@ -254,13 +254,13 @@ module Benchmark
       aic = -1.0/0
       best_aic = -1.0/0
 
-      fit_types.each do |fit|
+      FIT_TYPES.each do |fit|
         a, b, rr = *send(:"fit_#{fit}", ns, times)
         # goodness of model
         aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
         fitted[fit] = {trend: trend_format(fit) % [a, b],
                        slope: a, intercept: b, residual: rr}
-        if rr > best_residual && aic >= best_aic
+        if rr > best_residual && aic > best_aic
           best_residual = rr
           best_fit = fit
           best_aic = aic
