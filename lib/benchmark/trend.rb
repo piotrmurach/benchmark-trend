@@ -210,6 +210,33 @@ module Benchmark
     end
     module_function :fit
 
+    # Take a fit and estimate behaviour at input size n
+    #
+    # @example
+    #   fit_at(:power, slope: 1.5, intercept: 2, n: 10)
+    #
+    # @return
+    #   fit model value for input n
+    #
+    # @api public
+    def fit_at(type, slope:, intercept:, n:)
+      raise ArgumentError, "Incorrect input size: #{n}" unless n > 0
+
+      case type
+      when :logarithmic, :log
+        intercept + slope * Math.log(n)
+      when :linear
+        intercept + slope * n
+      when :power
+        intercept * (n ** slope)
+      when :exponential, :exp
+        slope * (intercept ** n)
+      else
+        raise ArgumentError, "Unknown fit type: #{type}"
+      end
+    end
+    module_function :fit_at
+
     # A mathematical notation template for a trend type
     #
     # @return [String]
