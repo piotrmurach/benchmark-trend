@@ -7,7 +7,7 @@ RSpec.describe Benchmark::Trend, '#range' do
   end
 
   it "creates range with 2 multiplier" do
-    range = Benchmark::Trend.range(8, 8 << 10, multi: 2)
+    range = Benchmark::Trend.range(8, 8 << 10, ratio: 2)
     expect(range).to eq([8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192])
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Benchmark::Trend, '#range' do
 
   it "checks multiplier to be valid" do
     expect { 
-      Benchmark::Trend.range(8, 32, multi: 1)
+      Benchmark::Trend.range(8, 32, ratio: 1)
     }.to raise_error(ArgumentError, "Range value: 1 needs to be greater than 2")
   end
 end

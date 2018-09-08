@@ -24,19 +24,19 @@ module Benchmark
     #
     # @param [Integer] start
     # @param [Integer] limit
-    # @param [Integer] multi
+    # @param [Integer] ratio
     #
     # @api public
-    def range(start, limit, multi: 8)
+    def range(start, limit, ratio: 8)
       check_greater(start, 0)
       check_greater(limit, start)
-      check_greater(multi, 2)
+      check_greater(ratio, 2)
 
       items = []
       count = start
       items << count
-      (limit/multi).times do
-        count *= multi
+      (limit / ratio).times do
+        count *= ratio
         break if count >= limit
         items << count
       end
@@ -71,8 +71,7 @@ module Benchmark
     # @api public
     def measure_execution_time(data = nil, &work)
       inputs = data || range(1, 10_000)
-
-      times = []
+      times  = []
 
       inputs.each do |input|
         GC.start
