@@ -3,5 +3,5 @@
 module Benchmark
   module Trend
     VERSION = "0.1.0"
-  end
-end
+  end # Trend
+end # Benchmark

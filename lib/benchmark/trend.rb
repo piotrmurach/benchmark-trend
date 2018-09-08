@@ -117,7 +117,7 @@ module Benchmark
     #
     # @api public
     def fit_logarithmic(xs, ys)
-      fit(xs, ys, tran_x: ->(x) { Math.log(x)})
+      fit(xs, ys, tran_x: ->(x) { Math.log(x) })
     end
     module_function :fit_logarithmic
 
@@ -133,8 +133,8 @@ module Benchmark
     #
     # @api public
     def fit_power(xs, ys)
-      a, b, rr = fit(xs, ys, tran_x: ->(x) { Math.log(x)},
-                             tran_y: ->(y) { Math.log(y)})
+      a, b, rr = fit(xs, ys, tran_x: ->(x) { Math.log(x) },
+                             tran_y: ->(y) { Math.log(y) })
 
       [Math.exp(b), a, rr]
     end
@@ -158,7 +158,7 @@ module Benchmark
     alias fit_exp fit_exponential
     module_function :fit_exp
 
-    # Fit the performance measurements to construct a model with 
+    # Fit the performance measurements to construct a model with
     # slope and intercept parameters that minimize the error.
     #
     # @param [Array[Numeric]] xs
@@ -287,8 +287,8 @@ module Benchmark
         a, b, rr = *send(:"fit_#{fit}", ns, times)
         # goodness of model
         aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
-        fitted[fit] = {trend: format_fit(fit) % [a, b],
-                       slope: a, intercept: b, residual: rr}
+        fitted[fit] = { trend: format_fit(fit) % [a, b],
+                        slope: a, intercept: b, residual: rr }
         if rr > best_residual && aic > best_aic
           best_residual = rr
           best_fit = fit
