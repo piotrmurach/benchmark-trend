@@ -16,7 +16,7 @@
 
 > Measure pefromance trends of Ruby code based on the input size distribution.
 
-You can use **Benchmark::Trend** to estimate computational complexity by running Ruby code on inputs increasing in size, and measuring its execution times. Based on these measurements **Benchmark::Trend** will fit a model that best predicts how a given Ruby code will perform with growing load.
+**Benchmark::Trend** will help you estimate the computational complexity of Ruby code by running it on inputs increasing in size, measuring their execution times, and then fitting these observations into a model that best predicts how a given Ruby code will scale as a function of growing workload.
 
 ## Why?
 
@@ -49,7 +49,7 @@ Or install it yourself as:
 
 ## 1. Usage
 
-Let's assume we would like to find out behaviour of a Fibonnacci algorith:
+Let's assume we would like to find out behaviour of a Fibonnacci algorithm:
 
 ```ruby
 def fibonacci(n)
@@ -60,9 +60,9 @@ end
 To measure the actual complexity of above function, we will use `infer_tren` method and pass it as a first argument an array of integer sizes and a block to execute the method:
 
 ```ruby
-sizes = (1..24).to_a
+numbers = Benchmark::Trend.range(1, 28, ratio: 2)
 
-trend, trends = Benchmark::Trend.infer_trend(sizes) do |n|
+trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
   fibonacci(n)
 end
 ```
@@ -79,32 +79,128 @@ and a Hash of all the trend data:
 ```ruby
 print trends
 # =>
-# {:exponential=>
-#   {:trend=>"1.39 * 0.00^n",
-#    :slope=>1.3861415449985763,
-#    :intercept=>1.9181961296516025e-06,
-#    :residual=>0.9165373086346811},
-#  :power=>
-#   {:trend=>"0.00n^2.27",
-#    :slope=>6.356187983536552e-07,
-#    :intercept=>2.2719141523851145,
-#    :residual=>0.6120494462223005},
-#  :linear=>
-#   {:trend=>"0.00*n + -0.00",
-#    :slope=>0.00026488137564940743,
-#    :intercept=>-0.002015679028937629,
-#    :residual=>0.44011069414646825},
-#  :logarithmic=>
-#   {:trend=>"0.00*ln(x) + -0.00",
-#    :slope=>0.0015946924639701383,
-#    :intercept=>-0.0023448616296455785,
-#    :residual=>0.22003702102339448}}
+{:exponential=>
+  {:trend=>"1.38 * 0.00^x",
+   :slope=>1.382889711685203,
+   :intercept=>3.822775903539121e-06,
+   :residual=>0.9052392775178072},
+ :power=>
+  {:trend=>"0.00 * x^2.11",
+   :slope=>2.4911044372815657e-06,
+   :intercept=>2.1138475434240918,
+   :residual=>0.5623418036957115},
+ :linear=>
+  {:trend=>"0.00 + -0.01*x",
+   :slope=>0.0028434594496586007,
+   :intercept=>-0.01370769842204958,
+   :residual=>0.7290365425188893},
+ :logarithmic=>
+  {:trend=>"0.02 + -0.02*ln(x)",
+   :slope=>0.01738674709454521,
+   :intercept=>-0.015489004560847924,
+   :residual=>0.3982368125757882}}
 ```
+
+You can see information for the best trend by passing name into trends hash:
+
+```ruby
+print trends[trend]
+# =>
+# {:trend=>"1.38 * 0.00^x",
+#  :slope=>1.382889711685203,
+#  :intercept=>3.822775903539121e-06,
+#  :residual=>0.9052392775178072},
+```
+
 ## 2. API
 
 ### 2.1 range
 
+To generate a range of values for testing code fitness you can use `range` method. It will generate a geometric sequence of numbers, where intermediate values are powers of range multiplier, by default 8:
+
+```ruby
+Benchmark::Trend.range(8, 8 << 10)
+# => [8, 64, 512, 4096, 8192]
+```
+
+You can change default sequence power this using `:ratio` keyword:
+
+```ruby
+Benchmark::Trend.range(8, 8 << 10, ratio: 2)
+# => [8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
+```
+
 ### 2.2 infer_trend
+
+To calculate an asymptotic behaviour of Rub code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block.
+
+For example, let's assume you would like to find out asymptotic behaviour of a Fibonnacci algorithm:
+
+```ruby
+def fibonacci(n)
+  n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+end
+```
+
+You would need to generate a range of inputs in powers of 2:
+
+```ruby
+numbers = Benchmark::Trend.range(1, 32, ratio: 2)
+# => [1, 2, 4, 8, 16, 32]
+```
+
+Then measure the performance of the Fibonacci algorithm for each of the data points and fit the observations into a model to predict behaviour as a function of input size:
+
+```ruby
+trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
+  fibonacci(n)
+end
+```
+
+The return includes the best fit name:
+
+```ruby
+print trend
+# => exponential
+```
+
+And a Hash of all measurements:
+
+```ruby
+print trends
+# =>
+# {:exponential=>
+#   {:trend=>"1.38 * 0.00^x",
+#    :slope=>1.382889711685203,
+#    :intercept=>3.822775903539121e-06,
+#    :residual=>0.9052392775178072},
+#  :power=>
+#   {:trend=>"0.00 * x^2.11",
+#    :slope=>2.4911044372815657e-06,
+#    :intercept=>2.1138475434240918,
+#    :residual=>0.5623418036957115},
+#  :linear=>
+#   {:trend=>"0.00 + -0.01*x",
+#    :slope=>0.0028434594496586007,
+#    :intercept=>-0.01370769842204958,
+#    :residual=>0.7290365425188893},
+#  :logarithmic=>
+#   {:trend=>"0.02 + -0.02*ln(x)",
+#    :slope=>0.01738674709454521,
+#    :intercept=>-0.015489004560847924,
+#    :residual=>0.3982368125757882}}
+```
+
+In order to retrieve trend data for the best fit do:
+
+```ruby
+print trends[trend]
+# =>
+# {:trend=>"1.38 * 0.00^x",
+#  :slope=>1.382889711685203,
+#  :intercept=>3.822775903539121e-06,
+#  :residual=>0.9052392775178072}
+```
 
 ## Development
 
