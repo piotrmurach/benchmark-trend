@@ -1,11 +1,35 @@
 # frozen_string_literal: true
 
 RSpec.describe Benchmark::Trend, '#infer_trend' do
+  # exponential
   def fibonacci(n)
     n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
   end
 
-  it "infers fibonacci algorithm trend to be exponential" do
+  # linear
+  def fib_mem(n, acc = {"0": 0, "1": 1})
+    return n if n < 2
+
+    if !acc.key?(n.to_s)
+      acc[n.to_s] = fib_mem(n - 1, acc) + fib_mem(n - 2, acc)
+    end
+    acc[n.to_s]
+  end
+
+  # linear
+  def fib_iter(n)
+    a, b = 0, 1
+    n.times { a, b = b, a + b}
+    a
+  end
+
+  # constant
+  def fib_const(n)
+    phi = (1 + Math.sqrt(5))/2
+    (phi ** n / Math.sqrt(5)).round
+  end
+
+  it "infers fibonacci classic algorithm trend to be exponential" do
     numbers = Benchmark::Trend.range(1, 28, ratio: 2)
     trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
       fibonacci(n)
@@ -17,6 +41,34 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     expect(trends[:exponential]).to match(
       hash_including(:trend, :slope, :intercept, :residual)
     )
+  end
+
+  it "infers fibonacci memoized algorithm trend to be linear" do
+    numbers = Benchmark::Trend.range(1, 5_000, ratio: 2)
+    trend, _ = Benchmark::Trend.infer_trend(numbers) do |n|
+      fib_mem(n)
+    end
+
+    expect(trend).to eq(:linear)
+  end
+
+  it "infers fibonacci iterative algorithm trend to be linear" do
+    numbers = Benchmark::Trend.range(1, 10_000, ratio: 2)
+    trend, _ = Benchmark::Trend.infer_trend(numbers) do |n|
+      fib_iter(n)
+    end
+
+    expect(trend).to eq(:linear)
+  end
+
+  it "infers fibonacci constant algorithm trend to be linear" do
+    numbers = Benchmark::Trend.range(1, 1_000, ratio: 2)
+    trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
+      fib_const(n)
+    end
+
+    expect(trend).to eq(:linear)
+    expect(trends[trend][:slope]).to eq(0)
   end
 
   it "infers finding maximum value trend to be linear" do
