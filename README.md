@@ -46,6 +46,8 @@ Or install it yourself as:
 * [2. API](#2--api)
   * [2.1 range](#21-range)
   * [2.2 infer_trend](#22-infer_trend)
+  * [2.3 fit](#23-fit)
+  * [2.4 fit_at](#24-fit_at)
 
 ## 1. Usage
 
@@ -116,14 +118,14 @@ print trends[trend]
 
 ### 2.1 range
 
-To generate a range of values for testing code fitness you can use `range` method. It will generate a geometric sequence of numbers, where intermediate values are powers of range multiplier, by default 8:
+To generate a range of values for testing code fitness use the `range` method. It will generate a geometric sequence of numbers, where intermediate values are powers of range multiplier, by default 8:
 
 ```ruby
 Benchmark::Trend.range(8, 8 << 10)
 # => [8, 64, 512, 4096, 8192]
 ```
 
-You can change default sequence power this using `:ratio` keyword:
+You can change the default sequence power by using `:ratio` keyword:
 
 ```ruby
 Benchmark::Trend.range(8, 8 << 10, ratio: 2)
@@ -134,7 +136,7 @@ Benchmark::Trend.range(8, 8 << 10, ratio: 2)
 
 To calculate an asymptotic behaviour of Rub code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block.
 
-For example, let's assume you would like to find out asymptotic behaviour of a Fibonnacci algorithm:
+For example, let's assume you would like to find out asymptotic behaviour of a Fibonacci algorithm:
 
 ```ruby
 def fibonacci(n)
@@ -142,7 +144,7 @@ def fibonacci(n)
 end
 ```
 
-You would need to generate a range of inputs in powers of 2:
+You could start by generating a range of inputs in powers of 2:
 
 ```ruby
 numbers = Benchmark::Trend.range(1, 32, ratio: 2)
@@ -201,6 +203,41 @@ print trends[trend]
 #  :intercept=>3.822775903539121e-06,
 #  :residual=>0.9052392775178072}
 ```
+
+### 2.3 fit
+
+
+### 2.4 fit_at
+
+If you are interestd how a model scales for a given input use `fit_at`. This method expects that there is a fit model generated using [infer_trend](#22-infer_trend).
+
+For example, measuring Fibonacci recursive algorithm we have the following results:
+
+```ruby
+# =>
+{:trend=>"1.38 * 0.00^x",
+ :slope=>1.382889711685203,
+ :intercept=>3.822775903539121e-06,
+ :residual=>0.9052392775178072}
+```
+
+And checking model at input of `50`:
+
+```ruby
+Benchamrk::Trend.fit_at(:exponential, slope: 1.382889711685203, intercept: 3.822775903539121e-06, n: 50)
+# => 41.8558455915123
+```
+
+We can see that Fibonacci with just a number 50 will take around 42 seconds to get the result!
+
+How about Fibonacci with 100 as an input?
+
+```ruby
+Benchamrk::Trend.fit_at(:exponential, slope: 1.382889711685203, intercept: 3.822775903539121e-06, n: 100)
+# => 458282633.9777338
+```
+
+This means Fibonacci recursive algorithm will take about 1.45 year to complete!
 
 ## Development
 
