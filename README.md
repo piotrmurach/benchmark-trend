@@ -206,6 +206,31 @@ print trends[trend]
 
 ### 2.3 fit
 
+Use `fit` method if you wish to fit arbitrary data and measure their performance to construct a model with a slope and intercept parameters that minimize the error.
+
+For example, given a set of data points that exhibit linear behaviour:
+
+```ruby
+xs = [1, 2, 3, 4, 5]
+ys = xs.map { |x| 3.0 * x + 1.0 }
+```
+
+Fit the data into a model:
+
+```ruby
+slope, intercept, error = Benchmark::Trend.fit(xs, ys)
+```
+
+And printing the values we get confirmation of the linear behaviour of the data points:
+
+```ruby
+print slope
+# => 3.0
+print intercept
+# => 1.0
+print error
+# => 1.0
+```
 
 ### 2.4 fit_at
 
