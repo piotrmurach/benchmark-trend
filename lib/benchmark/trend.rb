@@ -219,7 +219,7 @@ module Benchmark
     #   fit model value for input n
     #
     # @api public
-    def fit_at(type, slope:, intercept:, n:)
+    def fit_at(type, slope: nil, intercept: nil, n: nil)
       raise ArgumentError, "Incorrect input size: #{n}" unless n > 0
 
       case type
