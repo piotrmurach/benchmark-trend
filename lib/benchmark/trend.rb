@@ -239,25 +239,28 @@ module Benchmark
 
     # A mathematical notation template for a trend type
     #
+    # @param [String] type
+    #   the fit model type
+    #
     # @return [String]
     #   the formatted mathematical function template
     #
     # @api private
-    def trend_format(type)
+    def format_fit(type)
       case type
+      when :logarithmic, :log
+        "%.2f + %.2f*ln(x)"
       when :linear
-        "%.2f*n + %.2f"
-      when :logarithmic
-        "%.2f*ln(x) + %.2f"
+        "%.2f + %.2f*x"
       when :power
-        "%.2fn^%.2f"
-      when :exponential
-        "%.2f * %.2f^n"
+        "%.2f * x^%.2f"
+      when :exponential, :exp
+        "%.2f * %.2f^x"
       else
-        "Uknown type: '#{type}'"
+        raise ArgumentError, "Unknown type: '#{type}'"
       end
     end
-    module_function :trend_format
+    module_function :format_fit
 
     # the trends to consider
     FIT_TYPES = [:exponential, :power, :linear, :logarithmic]
@@ -285,7 +288,7 @@ module Benchmark
         a, b, rr = *send(:"fit_#{fit}", ns, times)
         # goodness of model
         aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
-        fitted[fit] = {trend: trend_format(fit) % [a, b],
+        fitted[fit] = {trend: format_fit(fit) % [a, b],
                        slope: a, intercept: b, residual: rr}
         if rr > best_residual && aic > best_aic
           best_residual = rr
