@@ -7,7 +7,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   # linear
-  def fib_mem(n, acc = {"0": 0, "1": 1})
+  def fib_mem(n, acc = {"0" => 0, "1" => 1})
     return n if n < 2
 
     if !acc.key?(n.to_s)
