@@ -229,7 +229,7 @@ module Benchmark
       when :power
         intercept * (n ** slope)
       when :exponential, :exp
-        slope * (intercept ** n)
+        intercept * (slope ** n)
       else
         raise ArgumentError, "Unknown fit type: #{type}"
       end

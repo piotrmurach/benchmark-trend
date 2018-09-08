@@ -22,7 +22,7 @@ RSpec.describe Benchmark::Trend, '#fit_at' do
   it "evalutes power fit model at a given value" do
     val = Benchmark::Trend.fit_at(:exponential, slope: 1.5, intercept: 2, n: 10)
 
-    expect(val).to be_within(0.1).of(1536.0)
+    expect(val).to be_within(0.1).of(115.33)
   end
 
   it "doesn't recognise fit model" do
