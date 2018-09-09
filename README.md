@@ -43,11 +43,13 @@ Or install it yourself as:
 ## Contents
 
 * [1. Usage](#1-usage)
-* [2. API](#2--api)
+* [2. API](#2-api)
   * [2.1 range](#21-range)
   * [2.2 infer_trend](#22-infer_trend)
   * [2.3 fit](#23-fit)
   * [2.4 fit_at](#24-fit_at)
+* [3. Examples](#3-examples)
+  * [3.1 Ruby array max](#3-ruby-array-max)
 
 ## 1. Usage
 
@@ -263,6 +265,51 @@ Benchamrk::Trend.fit_at(:exponential, slope: 1.382889711685203, intercept: 3.822
 ```
 
 This means Fibonacci recursive algorithm will take about 1.45 year to complete!
+
+## 3. Examples
+
+### 3.1 Ruby array max
+
+Suppose you wish to find an asymptotic behaviour of Ruby built Array `max` method.
+
+You could start with generating a [range](#21-range) of inputs:
+
+```ruby
+array_sizes = Benchmark::Trend.range(1, 100_000)
+# => [1, 8, 64, 512, 4096, 32768, 100000]
+```
+
+Next, based on the generated ranges create arrays containing randomly generated integers:
+
+```ruby
+number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
+```
+
+Then feed this information to infer a trend:
+
+```ruby
+trend, trends = Benchmark::Trend.infer_trend(array_sizes) do
+  number_arrays.next.max
+end
+```
+
+Unsuprisingly, we discover that Ruby's `max` call scales linearily with the input size:
+
+```ruby
+print trend
+# => linear
+```
+
+We can also see from the residual value that this is a near perfect fit:
+
+```ruby
+print trends[trend]
+# =>
+# {:trend=>"0.00 + 0.00*x",
+#  :slope=>5.873536409841244e-09,
+#  :intercept=>3.028647045635842e-05,
+#  :residual=>0.9986764704492359}
+```
 
 ## Development
 
