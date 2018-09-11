@@ -49,7 +49,7 @@ Or install it yourself as:
   * [2.3 fit](#23-fit)
   * [2.4 fit_at](#24-fit_at)
 * [3. Examples](#3-examples)
-  * [3.1 Ruby array max](#3-ruby-array-max)
+  * [3.1 Ruby array max](#31-ruby-array-max)
 
 ## 1. Usage
 
