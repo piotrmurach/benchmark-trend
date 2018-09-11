@@ -53,13 +53,13 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
   end
 
   it "infers fibonacci constant algorithm trend to be linear" do
-    numbers = Benchmark::Trend.range(1, 500)
+    numbers = Benchmark::Trend.range(1, 1000, ratio: 2)
     trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_const(n)
     end
 
-    expect(trend).to eq(:linear)
-    expect(trends[trend][:slope]).to eq(0)
+    expect(trend).to eq(:logarithmic)
+    expect(trends[trend][:slope]).to be_within(0.0001).of(0)
   end
 
   it "infers finding maximum value trend to be linear" do
@@ -71,10 +71,17 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     end
 
     expect(trend).to eq(:linear)
-    expect(trends).to match(
-      hash_including(:exponential, :power, :linear, :logarithmic))
-    expect(trends[:exponential]).to match(
-      hash_including(:trend, :slope, :intercept, :residual)
-    )
+    expect(trends[trend][:slope]).to be_within(0.0001).of(0)
+  end
+
+  it "infers binary search trend to be logarithmic" do
+    array_sizes = Benchmark::Trend.range(1, 100_000)
+    number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
+
+    trend, _ = Benchmark::Trend.infer_trend(array_sizes) do |n|
+      number_arrays.next.bsearch { |x| x > n/2 }
+    end
+
+    expect(trend).to eq(:logarithmic)
   end
 end

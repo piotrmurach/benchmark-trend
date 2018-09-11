@@ -193,9 +193,11 @@ module Benchmark
       tx  = n * sum_x2 - sum_x ** 2
       ty  = n * sum_y2 - sum_y ** 2
 
+      is_linear = tran_x.(Math::E) * tran_y.(Math::E) == Math::E ** 2
+
       if tx.abs < eps # no variation in xs
         raise ArgumentError, "No variation in data #{xs}"
-      elsif ty.abs < eps # no variation in ys - constant fit
+      elsif ty.abs == 0 && is_linear # no variation in ys - constant fit
         slope = 0
         intercept = sum_y / n
         residual_sq = 1 # doesn't exist
@@ -289,7 +291,7 @@ module Benchmark
         aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
         fitted[fit] = { trend: format_fit(fit) % [a, b],
                         slope: a, intercept: b, residual: rr }
-        if rr > best_residual && aic > best_aic
+        if rr >= best_residual && aic >= best_aic
           best_residual = rr
           best_fit = fit
           best_aic = aic
