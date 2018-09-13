@@ -14,7 +14,7 @@
 [coverage]: https://coveralls.io/github/piotrmurach/benchmark-trend?branch=master
 [inchpages]: http://inch-ci.org/github/piotrmurach/benchmark-trend
 
-> Measure pefromance trends of Ruby code based on the input size distribution.
+> Measure performance trends of Ruby code based on the input size distribution.
 
 **Benchmark::Trend** will help you estimate the computational complexity of Ruby code by running it on inputs increasing in size, measuring their execution times, and then fitting these observations into a model that best predicts how a given Ruby code will scale as a function of growing workload.
 
