@@ -136,7 +136,7 @@ Benchmark::Trend.range(8, 8 << 10, ratio: 2)
 
 ### 2.2 infer_trend
 
-To calculate an asymptotic behaviour of Rub code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block.
+To calculate an asymptotic behaviour of Ruby code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block.
 
 For example, let's assume you would like to find out asymptotic behaviour of a Fibonacci algorithm:
 
