@@ -100,7 +100,7 @@ module Benchmark
 
       inputs.each do |input|
         GC.start
-        times << ::Benchmark.realtime do
+        times << clock_time do
           work.(input)
         end
       end
