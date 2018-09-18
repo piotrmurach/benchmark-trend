@@ -14,6 +14,31 @@ module Benchmark
       private_class_method(method)
     end
 
+    if defined?(Process::CLOCK_MONOTONIC)
+      # Object representing current time
+      def time_now
+        Process.clock_gettime Process::CLOCK_MONOTONIC
+      end
+      module_function :time_now
+    else
+      # Object represeting current time
+      def time_now
+        Time.now
+      end
+      module_function :time_now
+    end
+
+    # Measure time elapsed with a monotonic clock
+    #
+    # @public
+    def clock_time
+      before = time_now
+      yield
+      after = time_now
+      after - before
+    end
+    module_function :clock_time
+
     # Generate a range of inputs spaced by powers.
     #
     # The default range is generated in the multiples of 8.
