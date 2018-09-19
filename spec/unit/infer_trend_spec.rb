@@ -29,6 +29,15 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     (phi ** n / Math.sqrt(5)).round
   end
 
+  it "infers constant trend" do
+    numbers = Benchmark::Trend.range(1, 100_000)
+    trend, = Benchmark::Trend.infer_trend(numbers) do |n|
+      n * n
+    end
+
+    expect(trend).to eq(:constant)
+  end
+
   it "infers fibonacci classic algorithm trend to be exponential" do
     numbers = Benchmark::Trend.range(1, 28, ratio: 2)
     trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|

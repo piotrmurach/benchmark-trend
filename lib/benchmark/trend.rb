@@ -276,7 +276,7 @@ module Benchmark
       case type
       when :logarithmic, :log
         "%.2f + %.2f*ln(x)"
-      when :linear
+      when :linear, :constant
         "%.2f + %.2f*x"
       when :power
         "%.2f * x^%.2f"
@@ -314,6 +314,9 @@ module Benchmark
         a, b, rr = *send(:"fit_#{fit}", ns, times)
         # goodness of model
         aic = n * (Math.log(Math::PI) + 1) + n * Math.log(rr / n)
+        if a == 0 && fit == :linear
+          fit = :constant
+        end
         fitted[fit] = { trend: format_fit(fit) % [a, b],
                         slope: a, intercept: b, residual: rr }
         if rr >= best_residual && aic >= best_aic
