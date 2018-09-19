@@ -23,7 +23,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     a
   end
 
-  # constant
+  # logarithmic
   def fib_const(n)
     phi = (1 + Math.sqrt(5))/2
     (phi ** n / Math.sqrt(5)).round
@@ -61,8 +61,9 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     expect(trend).to eq(:linear)
   end
 
-  it "infers fibonacci constant algorithm trend to be linear" do
-    numbers = Benchmark::Trend.range(1, 100, ratio: 2)
+  it "infers fibonacci constant algorithm trend to be logarithmic" do
+    # exponetiation by squaring has logarithmic complexity
+    numbers = Benchmark::Trend.range(1, 1400, ratio: 2)
     trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_const(n)
     end
@@ -88,7 +89,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
 
     trend, trends = Benchmark::Trend.infer_trend(array_sizes) do |n|
-      number_arrays.next.bsearch { |x| x > n/2 }
+      number_arrays.next.bsearch { |x| x > n-1 }
     end
 
     expect(trend).to eq(:logarithmic)
