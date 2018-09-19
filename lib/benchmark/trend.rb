@@ -197,7 +197,7 @@ module Benchmark
     #
     # @api public
     def fit(xs, ys, tran_x: ->(x) { x }, tran_y: ->(y) { y })
-      eps    = 0.000001
+      eps    = (10 ** -9)
       n      = 0
       sum_x  = 0.0
       sum_x2 = 0.0
@@ -222,7 +222,7 @@ module Benchmark
 
       if tx.abs < eps # no variation in xs
         raise ArgumentError, "No variation in data #{xs}"
-      elsif ty.abs == 0 && is_linear # no variation in ys - constant fit
+      elsif ty.abs < eps && is_linear # no variation in ys - constant fit
         slope = 0
         intercept = sum_y / n
         residual_sq = 1 # doesn't exist
