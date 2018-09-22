@@ -109,7 +109,7 @@ module Benchmark
           measurements << clock_time { work.(input, i) }
         end
 
-        times << measurements.sum.to_f / measurements.size
+        times << measurements.reduce(&:+).to_f / measurements.size
       end
       [inputs, times]
     end
