@@ -158,7 +158,7 @@ module Benchmark
 
     # Finds a line of best fit that approxmimates power function
     #
-    # Function form: y = ax^b
+    # Function form: y = bx^a
     #
     # @return [Numeric, Numeric, Numeric]
     #   returns a, b, and rr values
@@ -168,7 +168,7 @@ module Benchmark
       a, b, rr = fit(xs, ys, tran_x: ->(x) { Math.log(x) },
                              tran_y: ->(y) { Math.log(y) })
 
-      [Math.exp(b), a, rr]
+      [a, Math.exp(b), rr]
     end
     module_function :fit_power
 
