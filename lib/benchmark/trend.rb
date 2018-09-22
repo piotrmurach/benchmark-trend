@@ -91,18 +91,25 @@ module Benchmark
     # @param [Array[Numeric]] data
     #   the data to run measurements for
     #
+    # @param [Integer] repeat
+    #   nubmer of times work is called to compute execution time
+    #
     # @return [Array[Array, Array]]
     #
     # @api public
-    def measure_execution_time(data = nil, &work)
+    def measure_execution_time(data = nil, repeat: 1, &work)
       inputs = data || range(1, 10_000)
       times  = []
 
-      inputs.each do |input|
+      inputs.each_with_index do |input, i|
         GC.start
-        times << clock_time do
-          work.(input)
+        measurements = []
+
+        repeat.times do
+          measurements << clock_time { work.(input, i) }
         end
+
+        times << measurements.sum.to_f / measurements.size
       end
       [inputs, times]
     end
@@ -197,7 +204,7 @@ module Benchmark
     #
     # @api public
     def fit(xs, ys, tran_x: ->(x) { x }, tran_y: ->(y) { y })
-      eps    = (10 ** -9)
+      eps    = (10 ** -10)
       n      = 0
       sum_x  = 0.0
       sum_x2 = 0.0
@@ -295,14 +302,18 @@ module Benchmark
     #
     # Fits the executiom times for each range to several fit models.
     #
+    # @param [Integer] repeat
+    #   nubmer of times work is called to compute execution time
+    #
     # @yieldparam work
+    #   the block of which the complexity is measured
     #
     # @return [Array[Symbol, Hash]]
     #   the best fitting and all the trends
     #
     # @api public
-    def infer_trend(data, &work)
-      ns, times = *measure_execution_time(data, &work)
+    def infer_trend(data, repeat: 1, &work)
+      ns, times = *measure_execution_time(data, repeat: repeat, &work)
       best_fit = :none
       best_residual = 0
       fitted = {}

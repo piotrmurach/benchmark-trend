@@ -31,7 +31,7 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
 
   it "infers constant trend" do
     numbers = Benchmark::Trend.range(1, 100_000)
-    trend, = Benchmark::Trend.infer_trend(numbers) do |n|
+    trend, = Benchmark::Trend.infer_trend(numbers, repeat: 100) do |n|
       n
     end
 
@@ -61,38 +61,38 @@ RSpec.describe Benchmark::Trend, '#infer_trend' do
     expect(trend).to eq(:linear)
   end
 
-  xit "infers fibonacci constant algorithm trend to be logarithmic" do
+  it "infers fibonacci constant algorithm trend to be constant" do
     # exponetiation by squaring has logarithmic complexity
     numbers = Benchmark::Trend.range(1, 1400, ratio: 2)
-    trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
+    trend, trends = Benchmark::Trend.infer_trend(numbers, repeat: 100) do |n|
       fib_const(n)
     end
 
-    expect(trend).to eq(:logarithmic)
+    expect(trend).to eq(:constant)
     expect(trends[trend][:slope]).to be_within(0.0001).of(0)
   end
 
   it "infers finding maximum value trend to be linear" do
     array_sizes = Benchmark::Trend.range(1, 100_000)
-    number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
+    numbers = array_sizes.map { |n| Array.new(n) { rand(n) } }
 
-    trend, trends = Benchmark::Trend.infer_trend(array_sizes) do
-      number_arrays.next.max
+    trend, trends = Benchmark::Trend.infer_trend(array_sizes, repeat: 10) do |n, i|
+      numbers[i].max
     end
 
     expect(trend).to eq(:linear)
     expect(trends[trend][:slope]).to be_within(0.0001).of(0)
   end
 
-  xit "infers binary search trend to be logarithmic" do
-    array_sizes = Benchmark::Trend.range(1, 100_000, ratio: 2)
-    number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
+  it "infers binary search trend to be constant" do
+    range = Benchmark::Trend.range(10, 8 << 10, ratio: 2)
+    numbers = range.reduce([]) { |acc, n| acc << (1..n).to_a; acc }
 
-    trend, trends = Benchmark::Trend.infer_trend(array_sizes) do |n|
-      number_arrays.next.bsearch { |x| x > n-1 }
+    trend, trends = Benchmark::Trend.infer_trend(range, repeat: 100) do |n, i|
+      numbers[i].bsearch { |x| x == n/2 }
     end
 
-    expect(trend).to eq(:logarithmic)
+    expect(trend).to eq(:constant)
     expect(trends[trend][:slope]).to be_within(0.0001).of(0)
   end
 end
