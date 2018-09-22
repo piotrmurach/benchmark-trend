@@ -2,7 +2,7 @@
 #
 RSpec.describe Benchmark::Trend, "#measure_execution_time" do
   it "measures performance times" do
-    func = -> (x) { x ** 2 }
+    func = -> (x, i) { x ** 2 }
 
     data = Benchmark::Trend.measure_execution_time(&func)
 
