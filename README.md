@@ -46,6 +46,7 @@ Or install it yourself as:
 * [2. API](#2-api)
   * [2.1 range](#21-range)
   * [2.2 infer_trend](#22-infer_trend)
+    * [2.2.1 repeat](#221-repeat)
   * [2.3 fit](#23-fit)
   * [2.4 fit_at](#24-fit_at)
 * [3. Examples](#3-examples)
@@ -61,12 +62,12 @@ def fibonacci(n)
 end
 ```
 
-To measure the actual complexity of above function, we will use `infer_tren` method and pass it as a first argument an array of integer sizes and a block to execute the method:
+To measure the actual complexity of above function, we will use `infer_trend` method and pass it as a first argument an array of integer sizes and a block to execute the method:
 
 ```ruby
 numbers = Benchmark::Trend.range(1, 28, ratio: 2)
 
-trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
+trend, trends = Benchmark::Trend.infer_trend(numbers) do |n, i|
   fibonacci(n)
 end
 ```
@@ -136,7 +137,7 @@ Benchmark::Trend.range(8, 8 << 10, ratio: 2)
 
 ### 2.2 infer_trend
 
-To calculate an asymptotic behaviour of Ruby code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block.
+To calculate an asymptotic behaviour of Ruby code by inferring its computational complexity use `infer_trend`. This method takes as an argument an array of inputs which can be generated using [range](#21-range). The code to measure needs to be provided inside a block. Two parameters are always yielded to a block, first, the actual data input and second the current index matching the input.
 
 For example, let's assume you would like to find out asymptotic behaviour of a Fibonacci algorithm:
 
@@ -156,7 +157,7 @@ numbers = Benchmark::Trend.range(1, 32, ratio: 2)
 Then measure the performance of the Fibonacci algorithm for each of the data points and fit the observations into a model to predict behaviour as a function of input size:
 
 ```ruby
-trend, trends = Benchmark::Trend.infer_trend(numbers) do |n|
+trend, trends = Benchmark::Trend.infer_trend(numbers) do |n, i|
   fibonacci(n)
 end
 ```
@@ -204,6 +205,23 @@ print trends[trend]
 #  :slope=>1.382889711685203,
 #  :intercept=>3.822775903539121e-06,
 #  :residual=>0.9052392775178072}
+```
+
+### 2.2.1 repeat
+
+To increase stability of you tests consider repeating all time execution measurements using `:repeat` keyword.
+
+Start by generating a range of inputs for your algorithm:
+
+```ruby
+numbers = Benchmark::Trend.range(1, 32, ratio: 2)
+# => [1, 2, 4, 8, 16, 32]
+```
+
+and then run your algorithm for each input repeating measurements `100` times:
+
+```ruby
+Benchmark::Trend.infer_trend(numbers, repeat: 100) { |n, i| ... }
 ```
 
 ### 2.3 fit
@@ -282,14 +300,14 @@ array_sizes = Benchmark::Trend.range(1, 100_000)
 Next, based on the generated ranges create arrays containing randomly generated integers:
 
 ```ruby
-number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }.each
+number_arrays = array_sizes.map { |n| Array.new(n) { rand(n) } }
 ```
 
 Then feed this information to infer a trend:
 
 ```ruby
-trend, trends = Benchmark::Trend.infer_trend(array_sizes) do
-  number_arrays.next.max
+trend, trends = Benchmark::Trend.infer_trend(array_sizes) do |n, i|
+  number_arrays[i].max
 end
 ```
 
