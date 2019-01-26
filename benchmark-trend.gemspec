@@ -13,8 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/piotrmurach/benchmark-trend"
   spec.license       = "MIT"
 
-  spec.files         = Dir['{lib,spec,examples}/**/*.rb']
-  spec.files        += Dir['{bin,exe,tasks}/*', 'benchmark-trend.gemspec']
+  spec.files         = Dir['{lib,spec}/**/*.rb']
+  spec.files        += Dir['tasks/*', 'benchmark-trend.gemspec']
   spec.files        += Dir['README.md', 'CHANGELOG.md', 'LICENSE.txt', 'Rakefile']
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
