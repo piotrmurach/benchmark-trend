@@ -20,7 +20,7 @@
 
 ## Why?
 
-Tests provide safety net that ensures your code works correctly. What you don't know is how fast your code is! How does it scale with different input sizes? Your code may have computational complexity that doens't scale with large workloads. It would be good to know before your application goes into production, wouldn't it?
+Tests provide safety net that ensures your code works correctly. What you don't know is how fast your code is! How does it scale with different input sizes? Your code may have computational complexity that doesn't scale with large workloads. It would be good to know before your application goes into production, wouldn't it?
 
 **Benchmark::Trend** will allow you to uncover performance bugs or confirm that a Ruby code performance scales as expected.
 
@@ -54,11 +54,11 @@ Or install it yourself as:
 
 ## 1. Usage
 
-Let's assume we would like to find out behaviour of a Fibonnacci algorithm:
+Let's assume we would like to find out behaviour of a Fibonacci algorithm:
 
 ```ruby
 def fibonacci(n)
-  n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+  n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2)
 end
 ```
 
@@ -143,7 +143,7 @@ For example, let's assume you would like to find out asymptotic behaviour of a F
 
 ```ruby
 def fibonacci(n)
-  n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+  n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2)
 end
 ```
 
@@ -254,16 +254,16 @@ print error
 
 ### 2.4 fit_at
 
-If you are interestd how a model scales for a given input use `fit_at`. This method expects that there is a fit model generated using [infer_trend](#22-infer_trend).
+If you are interested how a model scales for a given input use `fit_at`. This method expects that there is a fit model generated using [infer_trend](#22-infer_trend).
 
 For example, measuring Fibonacci recursive algorithm we have the following results:
 
 ```ruby
 # =>
-{:trend=>"1.38 * 0.00^x",
- :slope=>1.382889711685203,
- :intercept=>3.822775903539121e-06,
- :residual=>0.9052392775178072}
+# {:trend=>"1.38 * 0.00^x",
+#  :slope=>1.382889711685203,
+#  :intercept=>3.822775903539121e-06,
+#  :residual=>0.9052392775178072}
 ```
 
 And checking model at input of `50`:
@@ -311,7 +311,7 @@ trend, trends = Benchmark::Trend.infer_trend(array_sizes) do |n, i|
 end
 ```
 
-Unsuprisingly, we discover that Ruby's `max` call scales linearily with the input size:
+Unsurprisingly, we discover that Ruby's `max` call scales linearily with the input size:
 
 ```ruby
 print trend
