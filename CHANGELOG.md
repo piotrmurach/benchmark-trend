@@ -1,5 +1,11 @@
 # Change log
 
+## [v0.3.0] - 2019-04-21
+
+### Changed
+* Change to require Ruby >= 2.0.0
+* Change to relax development dependencies
+
 ## [v0.2.0] - 2018-09-30
 
 ### Added
@@ -17,7 +23,8 @@
 
 ## [v0.1.0] - 2018-09-08
 
-* Inital implementation and release
+* Initial implementation and release
 
+[v0.3.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.1.0
