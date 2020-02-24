@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require 'benchmark'
-
-require_relative 'trend/version'
+require_relative "trend/clock"
+require_relative "trend/version"
 
 module Benchmark
   module Trend
@@ -13,31 +12,6 @@ module Benchmark
       module_function(method)
       private_class_method(method)
     end
-
-    if defined?(Process::CLOCK_MONOTONIC)
-      # Object representing current time
-      def time_now
-        Process.clock_gettime Process::CLOCK_MONOTONIC
-      end
-      module_function :time_now
-    else
-      # Object represeting current time
-      def time_now
-        Time.now
-      end
-      module_function :time_now
-    end
-
-    # Measure time elapsed with a monotonic clock
-    #
-    # @public
-    def clock_time
-      before = time_now
-      yield
-      after = time_now
-      after - before
-    end
-    module_function :clock_time
 
     # Generate a range of inputs spaced by powers.
     #
@@ -106,7 +80,7 @@ module Benchmark
         measurements = []
 
         repeat.times do
-          measurements << clock_time { work.(input, i) }
+          measurements << Clock.measure { work.(input, i) }
         end
 
         times << measurements.reduce(&:+).to_f / measurements.size
