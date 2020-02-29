@@ -256,9 +256,19 @@ print error
 
 If you are interested how a model scales for a given input use `fit_at`. This method expects that there is a fit model generated using [infer_trend](#22-infer_trend).
 
-For example, measuring Fibonacci recursive algorithm we have the following results:
+For example, measuring Fibonacci recursive algorithm:
 
 ```ruby
+numbers = Benchmark::Trend.range(1, 28, ratio: 2)
+trend, trends = Benchmark::Trend.infer_trend(numbers) do |n, i|
+  fibonacci(n)
+end
+```
+
+We get the following results:
+
+```ruby
+trends[trend]
 # =>
 # {:trend=>"1.38 * 0.00^x",
 #  :slope=>1.382889711685203,
@@ -269,7 +279,7 @@ For example, measuring Fibonacci recursive algorithm we have the following resul
 And checking model at input of `50`:
 
 ```ruby
-Benchamrk::Trend.fit_at(:exponential, slope: 1.382889711685203, intercept: 3.822775903539121e-06, n: 50)
+Benchamrk::Trend.fit_at(trend, n: 50, slope: trends[trend][:slope], intercept: trends[trend][:intercept])
 # => 41.8558455915123
 ```
 
@@ -278,7 +288,7 @@ We can see that Fibonacci with just a number 50 will take around 42 seconds to g
 How about Fibonacci with 100 as an input?
 
 ```ruby
-Benchamrk::Trend.fit_at(:exponential, slope: 1.382889711685203, intercept: 3.822775903539121e-06, n: 100)
+Benchamrk::Trend.fit_at(trend, n: 100, slope: trends[trend][:slope], intercept: trends[trend][:intercept])
 # => 458282633.9777338
 ```
 
