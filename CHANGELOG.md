@@ -1,5 +1,14 @@
 # Change log
 
+## [v0.4.0] - 2020-03-01
+
+### Added
+* Add Clock for monotonic time measuring
+
+### Changed
+* Change to remove benchmark requirement
+* Change gemspec to add metadata, remove test artefacts
+
 ## [v0.3.0] - 2019-04-21
 
 ### Changed
@@ -25,6 +34,7 @@
 
 * Initial implementation and release
 
+[v0.4.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/piotrmurach/benchmark-trend/compare/v0.1.0
