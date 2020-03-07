@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#fit_log' do
+RSpec.describe Benchmark::Trend, "#fit_log" do
   it "calculates perfect logarithmic fit" do
     xs = [1, 2, 3, 4, 5]
     ys = xs.map { |x|  1.5 * Math.log(x) + 1.0 }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#format_fit' do
+RSpec.describe Benchmark::Trend, "#format_fit" do
   it "returns a logarithmic template" do
     format = Benchmark::Trend.format_fit(:logarithmic)
     expect(format).to eq("%.2f + %.2f*ln(x)")

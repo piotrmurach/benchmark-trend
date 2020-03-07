@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#fit_linear' do
+RSpec.describe Benchmark::Trend, "#fit_linear" do
   it "calculates perfect linear fit" do
     xs = [1, 2, 3, 4, 5]
     ys = xs.map { |x| 3.0 * x + 1.0 }

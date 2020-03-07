@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#fit_exp' do
+RSpec.describe Benchmark::Trend, "#fit_exp" do
   it "calculates a perfect exponential fit" do
     xs = [1, 2, 3, 4, 5]
     ys = xs.map { |x| 1.5 * (2 ** x) }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#fit_at' do
+RSpec.describe Benchmark::Trend, "#fit_at" do
   it "evalutes logarithmic fit model at a given value" do
     val = Benchmark::Trend.fit_at(:logarithmic, slope: 1.5, intercept: 2, n: 10)
 

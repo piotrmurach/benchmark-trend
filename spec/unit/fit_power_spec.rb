@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#fit_power' do
-  it 'calculates perfect power fit' do
+RSpec.describe Benchmark::Trend, "#fit_power" do
+  it "calculates perfect power fit" do
     xs = [1, 2, 3, 4, 5]
     ys = xs.map { |x| 1.5 * (x ** 2) }
 

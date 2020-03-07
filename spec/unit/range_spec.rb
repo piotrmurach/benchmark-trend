@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#range' do
+RSpec.describe Benchmark::Trend, "#range" do
   it "creates default range" do
     range = Benchmark::Trend.range(8, 8 << 10)
     expect(range).to eq([8, 64, 512, 4096, 8192])

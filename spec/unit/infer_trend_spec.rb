@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Benchmark::Trend, '#infer_trend' do
+RSpec.describe Benchmark::Trend, "#infer_trend" do
   # exponential
   def fibonacci(n)
     n == 1 || n == 0 ? n : fibonacci(n - 1) + fibonacci(n - 2)
