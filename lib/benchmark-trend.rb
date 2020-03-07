@@ -1,1 +1,1 @@
-require_relative 'benchmark/trend'
+require_relative "benchmark/trend"
