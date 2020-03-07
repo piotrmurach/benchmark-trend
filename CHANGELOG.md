@@ -1,6 +1,6 @@
 # Change log
 
-## [v0.4.0] - 2020-03-01
+## [v0.4.0] - 2020-03-07
 
 ### Added
 * Add Clock for monotonic time measuring
