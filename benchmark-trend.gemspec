@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Piotr Murach"]
   spec.email         = ["piotr@piotrmurach.com"]
 
-  spec.summary       = %q{Measure pefromance trends of Ruby code based on the input size distribution.}
+  spec.summary       = %q{Measure performance trends of Ruby code based on the input size distribution.}
   spec.description   = %q{Benchmark::Trend will help you estimate the computational complexity of Ruby code by running it on inputs increasing in size, measuring their execution times, and then fitting these observations into a model that best predicts how a given Ruby code will scale as a function of growing workload.}
   spec.homepage      = "https://github.com/piotrmurach/benchmark-trend"
   spec.license       = "MIT"
