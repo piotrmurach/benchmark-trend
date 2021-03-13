@@ -1,14 +1,14 @@
 # Benchmark::Trend
 
 [![Gem Version](https://badge.fury.io/rb/benchmark-trend.svg)][gem]
-[![Build Status](https://secure.travis-ci.org/piotrmurach/benchmark-trend.svg?branch=master)][travis]
+[![Actions CI](https://github.com/piotrmurach/benchmark-trend/workflows/CI/badge.svg?branch=master)][gh_actions_ci]
 [![Build status](https://ci.appveyor.com/api/projects/status/798apneaa8ixg5dk?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/782faa4a8a4662c86792/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/benchmark-trend/badge.svg?branch=master)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/benchmark-trend.svg?branch=master)][inchpages]
 
 [gem]: http://badge.fury.io/rb/benchmark-trend
-[travis]: http://travis-ci.org/piotrmurach/benchmark-trend
+[gh_actions_ci]: https://github.com/piotrmurach/benchmark-trend/actions?query=workflow%3ACI
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/benchmark-trend
 [codeclimate]: https://codeclimate.com/github/piotrmurach/benchmark-trend/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/benchmark-trend?branch=master
