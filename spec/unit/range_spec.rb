@@ -12,19 +12,19 @@ RSpec.describe Benchmark::Trend, "#range" do
   end
 
   it "checks range start to be valid" do
-    expect { 
+    expect {
       Benchmark::Trend.range(-2, 10_000)
     }.to raise_error(ArgumentError, "Range value: -2 needs to be greater than 0")
   end
 
   it "checks range end to be greater than start" do
-    expect { 
+    expect {
       Benchmark::Trend.range(8, 2)
     }.to raise_error(ArgumentError, "Range value: 2 needs to be greater than 8")
   end
 
   it "checks multiplier to be valid" do
-    expect { 
+    expect {
       Benchmark::Trend.range(8, 32, ratio: 1)
     }.to raise_error(ArgumentError, "Range value: 1 needs to be greater than 2")
   end

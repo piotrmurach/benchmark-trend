@@ -7,10 +7,10 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
   end
 
   # linear
-  def fib_mem(n, acc = {"0" => 0, "1" => 1})
+  def fib_mem(n, acc = { "0" => 0, "1" => 1 })
     return n if n < 2
 
-    if !acc.key?(n.to_s)
+    unless acc.key?(n.to_s)
       acc[n.to_s] = fib_mem(n - 1, acc) + fib_mem(n - 2, acc)
     end
     acc[n.to_s]
@@ -19,7 +19,7 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
   # linear
   def fib_iter(n)
     a, b = 0, 1
-    n.times { a, b = b, a + b}
+    n.times { a, b = b, a + b }
     a
   end
 
@@ -45,7 +45,8 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
 
     expect(trend).to eq(:exponential)
     expect(trends).to match(
-      hash_including(:exponential, :power, :linear, :logarithmic))
+      hash_including(:exponential, :power, :linear, :logarithmic)
+    )
     expect(trends[:exponential]).to match(
       hash_including(:trend, :slope, :intercept, :residual)
     )
@@ -53,7 +54,7 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
 
   it "infers fibonacci iterative algorithm trend to be linear" do
     numbers = Benchmark::Trend.range(1, 20_000)
-    trend, _ = Benchmark::Trend.infer_trend(numbers) do |n|
+    trend, = Benchmark::Trend.infer_trend(numbers) do |n|
       fib_iter(n)
     end
 
@@ -72,10 +73,10 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
   end
 
   it "infers finding maximum value trend to be linear" do
-    array_sizes = Benchmark::Trend.range(1, 100_000)
-    numbers = array_sizes.map { |n| Array.new(n) { rand(n) } }
+    sizes = Benchmark::Trend.range(1, 100_000)
+    numbers = sizes.map { |n| Array.new(n) { rand(n) } }
 
-    trend, trends = Benchmark::Trend.infer_trend(array_sizes, repeat: 10) do |n, i|
+    trend, trends = Benchmark::Trend.infer_trend(sizes, repeat: 10) do |_n, i|
       numbers[i].max
     end
 
@@ -85,7 +86,7 @@ RSpec.describe Benchmark::Trend, "#infer_trend" do
 
   it "infers binary search trend to be constant" do
     range = Benchmark::Trend.range(10, 8 << 10, ratio: 2)
-    numbers = range.reduce([]) { |acc, n| acc << (1..n).to_a; acc }
+    numbers = range.each_with_object([]) { |n, acc| acc << (1..n).to_a }
 
     trend, trends = Benchmark::Trend.infer_trend(range, repeat: 100) do |n, i|
       numbers[i].bsearch { |x| x == n/2 }
