@@ -1,5 +1,12 @@
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 82
 
 Layout/SpaceAroundOperators:
   Enabled: false
@@ -13,7 +20,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   CountComments: true
   Max: 25
-  ExcludedMethods: []
+  IgnoredMethods: []
   Exclude:
     - "spec/**/*"
 
@@ -24,21 +31,39 @@ Metrics/CyclomaticComplexity:
   Enabled: true
   Max: 10
 
-Metrics/LineLength:
-  Max: 80
-
 Metrics/MethodLength:
   Max: 20
 
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+# { ... } for multi-line blocks is okay
 Style/BlockDelimiters:
-  Enabled: true
+  Enabled: false
 
 Style/CommentedKeyword:
   Enabled: false
 
 Style/LambdaCall:
+  EnforcedStyle: braces
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/MultipleComparison:
+  Enabled: false
+
+Style/ParallelAssignment:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: single_quotes
+  EnforcedStyle: double_quotes
+
+Style/TrivialAccessors:
+  Enabled: false
